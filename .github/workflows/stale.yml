@@ -13,19 +13,27 @@ jobs:
    runs-on: ubuntu-latest
 
    env:
+     ROLE_TO_ASSUME: arn:aws:iam::386802427002:role/github-action-roles
+     ROLE_SESSION_NAME: nukeallresourcesandbox
      AWS_DEFAULT_REGION: ap-southeast-1
+     VERSION_CLOUD_NUKE: v0.17.0
+     URL_CLOUD_NUKE: https://github.com/gruntwork-io/cloud-nuke/releases/download
 
    steps:
    - name: configureawscredentials
      uses: aws-actions/configure-aws-credentials@v1
      with:
-       role-to-assume: arn:aws:iam::386802427002:role/github-action-roles
-       role-session-name: samplerolesession
+       role-to-assume: ${{env.ROLE_TO_ASSUME}}
+       role-session-name: ${{env.ROLE_SESSION_NAME}}
        aws-region: ${{env.AWS_DEFAULT_REGION}}
 
    - name: Checkout
      uses: actions/checkout@v2
 
-   - name: Some AWS commands
+   - name: Download Cloud Nuke
      run: |
-       aws s3 ls
+       wget ${{env.URL_CLOUD_NUKE}}/${{env.AWS_DEFAULT_REGION}}/cloud-nuke_linux_amd64 && mv cloud-nuke_linux_amd64 /usr/local/bin/cloud-nuke
+   - name: Run Cloud Nuke Delete Resource 
+     run: | 
+       /usr/local/bin/cloud-nuke aws --resource-type s3 --force
+      
