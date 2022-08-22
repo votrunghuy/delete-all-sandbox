@@ -19,10 +19,20 @@ jobs:
       issues: write
       pull-requests: write
 
+   env:
+     AWS_DEFAULT_REGION: ap-southeast-1
+     
     steps:
-    - name: Configure AWS Credentials
+    - name: configureawscredentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-region: us-east-2
-        role-to-assume: arn:aws:iam::386802427002:role/lambda-nuke-all-resource
-        role-session-name: MySessionName
+        role-to-assume: arn:aws:iam::386802427002:role/github-action-roles
+        role-session-name: samplerolesession
+        aws-region: ${{env.AWS_DEFAULT_REGION}}
+        
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Some AWS commands
+      run: |
+        aws s3 ls 
