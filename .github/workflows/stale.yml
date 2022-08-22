@@ -37,4 +37,5 @@ jobs:
    - name: Run Cloud Nuke Delete Resource 
      run: | 
        /usr/local/bin/cloud-nuke aws --resource-type s3 --force
+       echo "Done"
       
