@@ -33,6 +33,7 @@ jobs:
    - name: Download Cloud Nuke
      run: |
        wget ${{env.URL_CLOUD_NUKE}}/${{env.VERSION_CLOUD_NUKE}}/cloud-nuke_linux_amd64 && mv cloud-nuke_linux_amd64 /usr/local/bin/cloud-nuke
+       chmod 755 /usr/local/bin/cloud-nuke
    - name: Run Cloud Nuke Delete Resource 
      run: | 
        /usr/local/bin/cloud-nuke aws --resource-type s3 --force
